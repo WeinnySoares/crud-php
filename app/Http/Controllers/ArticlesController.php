@@ -33,38 +33,29 @@ class ArticlesController extends Controller
            }
        }
 
+        foreach($arr as $car){
+            $articles = new Articles;
+            $article->img_hef = $car;
+            $article->name = $car;
+            $article->description = $car;
+            $article->year = $car;
+            $article->fuel = $car;
+            $article->ports = $car;
+            $article->color = $car;
+            $article->exchange = $car;
+            $article->mileage = $car;
+            $article->save();
+        }
 
-
-
-        return $arr;
-
-//// Variable to check
-//$str = "<h1>Hello World!</h1>";
-//// Remove HTML tags from string
-//$newstr = filter_var($str, FILTER_SANITIZE_STRING);
-//echo $newstr;
-//
-//        foreach([] as $car){
-//            $articles = new Articles;
-//            $article->img_hef = ;
-//            $article->name = ;
-//            $article->description = ;
-//            $article->year = ;
-//            $article->fuel = ;
-//            $article->ports = ;
-//            $article->color = ;
-//            $article->exchange = ;
-//            $article->mileage = ;
-//            $article->save();
-//        }
-//
-//        //return '';
+        return 'sucess';
     }
 
     public function all(){
-        return view('captura');
+        return Articles::all();
     }
-    public function remove($id){}
+    public function remove($id){
+        //DB::table('articles')->where('id','='$id)->delete();
+    }
 
     private function limpar_string($string) {
         if($string !== mb_convert_encoding(mb_convert_encoding($string, 'UTF-32', 'UTF-8'), 'UTF-8', 'UTF-32'))
