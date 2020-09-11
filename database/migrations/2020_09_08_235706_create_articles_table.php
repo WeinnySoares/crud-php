@@ -24,6 +24,7 @@ class CreateArticlesTable extends Migration
             $table->string('color');
             $table->string('exchange');//Câmbio
             $table->string('mileage');//quilometragem
+            $table->string('price');
             $table->timestamps();
         });
     }

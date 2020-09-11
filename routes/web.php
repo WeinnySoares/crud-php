@@ -10,7 +10,7 @@
 |
 */
 
-Route::get('/','ArticlesController@all');
+Route::get('/','ArticlesController@index');
 Route::post('/insert','ArticlesController@insert')->name('insert');
 Route::get('/all','ArticlesController@all');
 Route::get('/users','UserController@all');

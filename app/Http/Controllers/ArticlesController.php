@@ -20,39 +20,55 @@ class ArticlesController extends Controller
 
        $response = $results;
        $arr = [];
-       $cont = 0;
 
        foreach($results as $result){
            foreach($result as $key => $value){
                $clear = filter_var($value, FILTER_SANITIZE_STRING);
-               $clear = utf8_encode($clear);
-               $clear = str_replace(array("\r","\r\n","\n",'/id=(.*?)>/s'),"",$clear);
-               //$clear = json_encode($clear);
-                array_push($arr,$clear);
+               $clear = str_replace(["\r","\r\n","\n"],"",$clear);
+               $clear = preg_replace(array("/id=(.*?)>/s","/&(.*?);/s"),"",$clear);
 
+               $json = '{"nome":"'.$clear;
+               $json = str_replace("Ano:", '","ano":"', $json);
+               $json = str_replace("Quilometragem:", '","quilometragem":"', $json);
+               $json = str_replace("Combustível:", '","combustivel":"', $json);
+               $json = str_replace("Câmbio:", '","cambio":"', $json);
+               $json = str_replace("Portas:", '","portas":"', $json);
+               $json = str_replace("Cor:", '","cor":"', $json);
+               $json = str_replace("PREÇO:", '","preco":"', $json);
+               $json = $json.'"}';
+
+               $car = utf8_encode($json);
+               $car = json_decode($car);
+               array_push($arr,$car);
            }
        }
 
         foreach($arr as $car){
-            $articles = new Articles;
-            $article->img_hef = $car;
-            $article->name = $car;
-            $article->description = $car;
-            $article->year = $car;
-            $article->fuel = $car;
-            $article->ports = $car;
-            $article->color = $car;
-            $article->exchange = $car;
-            $article->mileage = $car;
+            $article = new Articles;
+            $article->img_hef = 'img';
+            $article->name = trim($car->nome);
+            $article->description = 'desc';
+            $article->year = trim($car->ano);
+            $article->fuel = trim($car->combustivel);
+            $article->ports = trim($car->portas);
+            $article->color = trim($car->cor);
+            $article->exchange = trim($car->cambio);
+            $article->mileage = trim($car->quilometragem);
+            $article->price = trim($car->preco);
             $article->save();
         }
 
-        return 'sucess';
+        return 'success';
     }
 
     public function all(){
         return Articles::all();
     }
+
+    public function index(){
+        return view('captura');
+    }
+
     public function remove($id){
         //DB::table('articles')->where('id','='$id)->delete();
     }
